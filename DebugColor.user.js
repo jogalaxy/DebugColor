@@ -2,7 +2,7 @@
 // @name         Leek Wars Debug Color
 // @downloadURL  https://raw.githubusercontent.com/jogalaxy/DebugColor/master/DebugColor.user.js
 // @updateURL    https://raw.githubusercontent.com/jogalaxy/DebugColor/master/DebugColor.user.js
-// @version      0.2
+// @version      0.3
 // @description  Permet de modifier la couleur des debugs
 // @author       jojo123
 // @match        http://leekwars.com/fight/*
@@ -22,9 +22,11 @@
 				game.hud.addPersonalLog = (function(log)
 				{
 					var leek = game.leeks[log[0]];
+					var color = (new Array("black", "orange", "red"))[log[1] - 1];
 					var newLog = newLog(log[2]);
+					if (newLog[1]) color = newLog[1];
 					var div = "<div class='log'>";
-					div += "<span style='color: " + newLog[1] + ";'>" + "[" + leek.name + "] " + newLog[0] + "</span>";
+					div += "<span style='color: " + color + ";'>" + "[" + leek.name + "] " + newLog[0] + "</span>";
 					div += "</div><br>";
 					$("#logs").append(div);
 					if ($("#logs .log").length > 40) {
