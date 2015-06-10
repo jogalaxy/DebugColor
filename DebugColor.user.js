@@ -2,7 +2,7 @@
 // @name         Leek Wars Debug Color
 // @downloadURL  https://raw.githubusercontent.com/jogalaxy/DebugColor/master/DebugColor.user.js
 // @updateURL    https://raw.githubusercontent.com/jogalaxy/DebugColor/master/DebugColor.user.js
-// @version      0.3
+// @version      0.4
 // @description  Permet de modifier la couleur des debugs
 // @author       jojo123
 // @match        http://leekwars.com/fight/*
@@ -10,50 +10,11 @@
 // @grant        none
 // ==/UserScript==
 
+function main () {
+
 (function()
 {
-	if (typeof Game !== "undefined")
-	{
-		var intervalDebugColor = setInterval(function()
-		{
-			if (game.inited)
-			{
-				clearInterval(intervalDebugColor);
-				game.hud.addPersonalLog = (function(log)
-				{
-					var leek = game.leeks[log[0]];
-					var color = (new Array("black", "orange", "red"))[log[1] - 1];
-					var newLog = newLog(log[2]);
-					if (newLog[1]) color = newLog[1];
-					var div = "<div class='log'>";
-					div += "<span style='color: " + color + ";'>" + "[" + leek.name + "] " + newLog[0] + "</span>";
-					div += "</div><br>";
-					$("#logs").append(div);
-					if ($("#logs .log").length > 40) {
-						$("#logs .log").first().remove();
-					}
-					function newLog(log)
-					{
-						var color = null;
-						var start = log.indexOf("|||{");
-						if (start != -1)
-						{
-							var end = log.indexOf("}", start);
-							if (end > start)
-							{
-								color = log.substr(start+4, (end-start)-4);
-								log = log.replace("|||{"+color+"}", "");
-							}
-						}
-						return [log, color];
-					}
-
-				});
-			}
-		}, 100);
-	}
-	else
-	{
+	LW.on('pageload', function() {
 		$('.log').each(function()
 		{
 			var log = $(this).html();
@@ -76,5 +37,13 @@
 				return [log, color];
 			}
 		});
-	}
+	});
+
 })();
+
+
+};
+
+var script = document.createElement('script');
+script.appendChild(document.createTextNode('('+ main +')();'));
+(document.body || document.head || document.documentElement).appendChild(script);
